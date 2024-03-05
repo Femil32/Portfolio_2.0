@@ -10,10 +10,7 @@ import axios from "axios";
 import Loader from "./components/Loader";
 import gsap from "gsap/all";
 
-
-
 function App() {
-
     const [theme, setTheme] = useState(false);
     const [ProjectsData, setProjectsData] = useState(null);
     const [BlogsData, setBlogsData] = useState(null);
@@ -21,9 +18,10 @@ function App() {
     const [mobileMenuToggle, setMobileMenuToggle] = useState(false);
 
     const fetchData = async () => {
+        console.log(import.meta.env.VITE_API_KEY);
         const request = axios.get("https://api.jsonbin.io/v3/b/6203902b69b72261be562d4a/latest", {
             headers: {
-                "X-Master-Key": process.env.API_KEY, //the token is a variable which holds the token
+                "X-Master-Key": import.meta.env.VITE_API_KEY, //the token is a variable which holds the token
             },
         });
         const timer = new Promise(resolve => setTimeout(resolve, 100));
@@ -80,36 +78,33 @@ function App() {
                 gsap.set(follower, {
                     css: {
                         left: posX - 12,
-                        top: posY - 12
-                    }
+                        top: posY - 12,
+                    },
                 });
 
                 gsap.set(cursor, {
                     css: {
                         left: mouseX,
-                        top: mouseY
-                    }
+                        top: mouseY,
+                    },
                 });
-            }
+            },
         });
 
-        document.onmousemove = (e) => {
+        document.onmousemove = e => {
             mouseX = e.clientX;
             mouseY = e.clientY;
-        }
-
-    }, [loading])
+        };
+    }, [loading]);
 
     return (
         <BrowserRouter>
-            <div className="cursor active hidden md:block"></div>
-            <div className="cursor-follower active hidden md:block"></div>
+            <div className='cursor active hidden md:block'></div>
+            <div className='cursor-follower active hidden md:block'></div>
             {loading ? (
                 <Loader />
             ) : (
-                <div
-                    className={`app relative min-h-screen w-screen overflow-hidden `}
-                >
+                <div className={`app relative min-h-screen w-screen overflow-hidden `}>
                     <div className='h-full w-full bg-bg-black px-[25px] dark:bg-bg-white'>
                         <Navbar
                             theme={theme}
@@ -124,10 +119,8 @@ function App() {
                         <Contact />
                     </div>
                 </div>
-            )
-            }
-
-        </BrowserRouter >
+            )}
+        </BrowserRouter>
     );
 }
 
